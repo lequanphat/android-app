@@ -10,6 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="Home"></TextView>
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        ></ImageView>
 
+    <Button
+        android:id="@+id/load"
+        android:layout_below="@id/image"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Load"
+        ></Button>
 
 </RelativeLayout>

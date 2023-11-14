@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -19,18 +22,29 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
 public class SecondFragment extends Fragment {
     private RecyclerView recyclerView;
     private ImageView imageView;
+    private ImageButton saveButton;
+    private Bitmap image = null;
+    private EditText titleEdt, contentEdt;
+    private static DatabaseHelper db;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = new DatabaseHelper(getContext());
     }
     public void initView(View root){
         imageView = root.findViewById(R.id.image);
+        saveButton = root.findViewById(R.id.saveBtn);
+        titleEdt = root.findViewById(R.id.title_edt);
+        contentEdt = root.findViewById(R.id.content_edt);
     }
     public void initEvent(View root){
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -38,6 +52,16 @@ public class SecondFragment extends Fragment {
             public void onClick(View v) {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 cameraIntentLauncher.launch(takePictureIntent);
+            }
+        });
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),image.toString(),Toast.LENGTH_SHORT).show();
+                String title = titleEdt.getText().toString().trim();
+                String content = contentEdt.getText().toString().trim();
+                Story story = new Story(title, content, image);
+                db.save(story);
             }
         });
     }
@@ -59,10 +83,35 @@ public class SecondFragment extends Fragment {
                     if(result.getResultCode() == Activity.RESULT_OK){
                         Intent data = result.getData();
                         if (data != null) {
-                            Bitmap capturedImage = (Bitmap) data.getExtras().get("data");
-                            imageView.setImageBitmap(capturedImage);
+                            image = (Bitmap) data.getExtras().get("data");
+                            imageView.setImageBitmap(image);
+                            saveImageToStorage(image);
                         }
                     }
                 }
             });
+
+    private String saveImageToStorage(Bitmap bitmapImage) {
+        String savedImagePath = null;
+
+        // Tạo thư mục để lưu trữ ảnh
+        String imageFileName = "IMG_" + System.currentTimeMillis() + ".jpg";
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera");
+
+        if (!storageDir.exists()) {
+            storageDir.mkdirs();
+        }
+        try {
+            File imageFile = new File(storageDir, imageFileName);
+            savedImagePath = imageFile.getAbsolutePath();
+
+            FileOutputStream fos = new FileOutputStream(imageFile);
+            bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            Toast.makeText(getContext(), "ok", Toast.LENGTH_SHORT).show();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return savedImagePath;
+    }
 }

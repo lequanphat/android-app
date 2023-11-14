@@ -1,10 +1,13 @@
 package com.example.mystories;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -18,9 +21,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        checkPermission();
         initView();
         setAhBottomNavigation();
         setUpViewPager();
+    }
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{ android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    100);
+        }
     }
     public void initView(){
         viewPager = (ViewPager) findViewById(R.id.viewpager);
