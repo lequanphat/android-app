@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -40,6 +41,7 @@ public class SecondFragment extends Fragment {
     private EditText titleEdt, contentEdt;
     private static DatabaseHelper db;
     private MyViewModel myViewModel;
+    private Button loadImageBtn;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +53,10 @@ public class SecondFragment extends Fragment {
         saveButton = root.findViewById(R.id.saveBtn);
         titleEdt = root.findViewById(R.id.title_edt);
         contentEdt = root.findViewById(R.id.content_edt);
+        loadImageBtn = root.findViewById(R.id.loadImage);
     }
     public void initEvent(View root){
-        imageView.setOnClickListener(new View.OnClickListener() {
+        loadImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -123,7 +126,7 @@ public class SecondFragment extends Fragment {
     }
     public String getCurrentTime(){
         Date currentDate = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         return sdf.format(currentDate);
     }
 }
