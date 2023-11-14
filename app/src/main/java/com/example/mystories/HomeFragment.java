@@ -8,6 +8,9 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.view.LayoutInflater;
@@ -17,34 +20,38 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class HomeFragment extends Fragment {
 
-    private ImageView imageView;
-    private Button loadBtn;
+    private RecyclerView recyclerView;
     private static DatabaseHelper db;
+    private MyViewModel myViewModel;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db = new DatabaseHelper(getContext());
+        myViewModel = new ViewModelProvider(requireActivity()).get(MyViewModel.class);
     }
     public void initViews(View root){
-        imageView = root.findViewById(R.id.image);
-        loadBtn = root.findViewById(R.id.load);
+        recyclerView = root.findViewById(R.id.recyclerView);
     }
-    public void initEvents(View root){
-        loadBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Story story = db.get();
-                imageView.setImageBitmap(story.getImg());
-                Toast.makeText(getContext(),story.getContent(),Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void setUpRecycler(){
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        loadData();
+
     }
+    public void loadData(){
+        List<Story> dataList = db.getAllStories();
+        MyAdapter adapter = new MyAdapter(dataList);
+        recyclerView.setAdapter(adapter);
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,7 +60,14 @@ public class HomeFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.home_fragment, container, false);
         initViews(root);
-        initEvents(root);
+
+        setUpRecycler();
+
+        myViewModel.getData().observe(getViewLifecycleOwner(), newStory -> {
+            ((MyAdapter)recyclerView.getAdapter()).addData(newStory);
+        });
+
+
         return root;
     }
 

@@ -12,6 +12,8 @@ import android.graphics.BitmapFactory;
 import androidx.annotation.Nullable;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "my_db";
@@ -47,21 +49,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
     }
+
+
     @SuppressLint("Range")
-    public Story get(){
+    public List<Story> getAllStories() {
+        List<Story> storyList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-        Bitmap bitmap = null;
-        String title = "111";
-        String content = "111";
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + CREATE_AT + " DESC ", null);
+
         if (cursor.moveToFirst()) {
-            byte[] imageByteArray = cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE));
-            bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-            content = cursor.getString(cursor.getColumnIndex(CONTENT));
+            do {
+                byte[] imageByteArray = cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE));
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
+                String title = cursor.getString(cursor.getColumnIndex(TITLE));
+                String content = cursor.getString(cursor.getColumnIndex(CONTENT));
+                String created_at = cursor.getString(cursor.getColumnIndex(CREATE_AT));
+                Story story = new Story(title, content, bitmap, created_at);
+                storyList.add(story);
+            } while (cursor.moveToNext());
         }
         cursor.close();
-        return new Story(title,content, bitmap);
+        return storyList;
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE);

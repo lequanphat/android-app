@@ -19,13 +19,17 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 
 public class SecondFragment extends Fragment {
@@ -35,10 +39,12 @@ public class SecondFragment extends Fragment {
     private Bitmap image = null;
     private EditText titleEdt, contentEdt;
     private static DatabaseHelper db;
+    private MyViewModel myViewModel;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db = new DatabaseHelper(getContext());
+        myViewModel = new ViewModelProvider(requireActivity()).get(MyViewModel.class);
     }
     public void initView(View root){
         imageView = root.findViewById(R.id.image);
@@ -60,8 +66,9 @@ public class SecondFragment extends Fragment {
                 Toast.makeText(getContext(),image.toString(),Toast.LENGTH_SHORT).show();
                 String title = titleEdt.getText().toString().trim();
                 String content = contentEdt.getText().toString().trim();
-                Story story = new Story(title, content, image);
+                Story story = new Story(title, content, image, getCurrentTime());
                 db.save(story);
+                myViewModel.setData(story);
             }
         });
     }
@@ -113,5 +120,10 @@ public class SecondFragment extends Fragment {
             e.printStackTrace();
         }
         return savedImagePath;
+    }
+    public String getCurrentTime(){
+        Date currentDate = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+        return sdf.format(currentDate);
     }
 }

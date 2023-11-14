@@ -10,12 +10,18 @@ import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.Toast;
+
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private AHBottomNavigation ahBottomNavigation;
+
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
                     100);
         }
     }
+
+
+
     public void initView(){
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         ahBottomNavigation = findViewById(R.id.navigation);
@@ -74,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set background color
         ahBottomNavigation.setColored(false);
-        ahBottomNavigation.setDefaultBackgroundColor(Color.parseColor("#3498db"));
+        ahBottomNavigation.setDefaultBackgroundColor(Color.parseColor("#2c3e50"));
         // Change colors
         ahBottomNavigation.setAccentColor(Color.parseColor("#FFFFFF"));
         ahBottomNavigation.setInactiveColor(Color.parseColor("#747474"));
@@ -99,4 +108,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
