@@ -66,14 +66,43 @@ public class SecondFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),image.toString(),Toast.LENGTH_SHORT).show();
-                String title = titleEdt.getText().toString().trim();
-                String content = contentEdt.getText().toString().trim();
-                Story story = new Story(title, content, image, getCurrentTime());
-                db.save(story);
-                myViewModel.setData(story);
+                handleStorySaved();
             }
         });
+    }
+    public void handleStorySaved(){
+        String title = titleEdt.getText().toString().trim();
+        String content = contentEdt.getText().toString().trim();
+        if(handleCheckStorySaved(title,content, image)){
+            Story story = new Story(title, content, image, getCurrentTime());
+            db.save(story);
+            myViewModel.setData(story);
+            resetData();
+            if (getActivity() instanceof ActionTransfer) {
+                ((ActionTransfer) getActivity()).goHomeAction();
+            }
+        }
+    }
+    public boolean handleCheckStorySaved(String title, String content, Bitmap image){
+        if(image == null){
+            MyDialog.showMessage(getContext(), "Vui lòng chụp một ảnh trước khi lưu!");
+            return false;
+        }
+        if(title.equals("")){
+            MyDialog.showMessage(getContext(), "Vui lòng đặt tiêu đề cho story!");
+            return false;
+        }
+        if(content.equals("")){
+            MyDialog.showMessage(getContext(), "Vui lòng viết nội dung cho story!");
+            return false;
+        }
+        return true;
+    }
+    public void resetData(){
+        image = null;
+        imageView.setImageBitmap(null);
+        titleEdt.setText("");
+        contentEdt.setText("");
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

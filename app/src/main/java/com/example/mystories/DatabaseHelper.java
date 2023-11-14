@@ -69,7 +69,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
         return storyList;
+    }
+    public void deleteStory(String createdAt) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, CREATE_AT + "=?", new String[]{createdAt});
+        db.close();
     }
 
     @Override

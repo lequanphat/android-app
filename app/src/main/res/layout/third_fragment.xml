@@ -4,12 +4,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ThirdFragment">
+    tools:context=".ThirdFragment"
+    android:background="#34495e">
 
     <TextView
+        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Third"></TextView>
+        android:layout_height="wrap_content"
+        android:background="#2c3e50"
+        android:text=" Setting"
+        android:textColor="#2ecc71"
+        android:textSize="24dp"
+        android:padding="4dp"
+        ></TextView>
+
+    <TextView
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Số lần thông báo"
+        android:layout_centerHorizontal="true"
+        android:textColor="#2ecc71"
+        android:textSize="20dp"
+        ></TextView>
+    <LinearLayout
+        android:layout_below="@+id/header"
+        android:layout_marginTop="120dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+    </LinearLayout>
 
 
 </RelativeLayout>

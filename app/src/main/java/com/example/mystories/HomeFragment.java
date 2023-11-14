@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment {
     }
     public void loadData(){
         List<Story> dataList = db.getAllStories();
-        MyAdapter adapter = new MyAdapter(dataList);
+        MyAdapter adapter = new MyAdapter(getContext(), dataList);
         recyclerView.setAdapter(adapter);
     }
 

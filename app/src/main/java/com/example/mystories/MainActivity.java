@@ -16,11 +16,12 @@ import android.widget.Toast;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements ActionTransfer{
     private ViewPager viewPager;
     private AHBottomNavigation ahBottomNavigation;
+
 
 
     @SuppressLint("MissingInflatedId")
@@ -45,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-
 
     public void initView(){
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -115,4 +114,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void goHomeAction() {
+        viewPager.setCurrentItem(0);
+    }
 }
