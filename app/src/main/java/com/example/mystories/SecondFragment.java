@@ -56,18 +56,12 @@ public class SecondFragment extends Fragment {
         loadImageBtn = root.findViewById(R.id.loadImage);
     }
     public void initEvent(View root){
-        loadImageBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                cameraIntentLauncher.launch(takePictureIntent);
-            }
+        loadImageBtn.setOnClickListener(v ->{
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            cameraIntentLauncher.launch(takePictureIntent);
         });
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleStorySaved();
-            }
+        saveButton.setOnClickListener(v -> {
+            handleStorySaved();
         });
     }
     public void handleStorySaved(){
@@ -158,4 +152,5 @@ public class SecondFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         return sdf.format(currentDate);
     }
+
 }

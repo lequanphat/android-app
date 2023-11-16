@@ -1,5 +1,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <corners android:radius="10dp" /> <!-- Điều chỉnh bán kính để bo tròn -->
+    <corners android:radius="6dp" /> <!-- Điều chỉnh bán kính để bo tròn -->
     <solid android:color="#2c3e50" /> <!-- Màu nền của RelativeLayout -->
 </shape>

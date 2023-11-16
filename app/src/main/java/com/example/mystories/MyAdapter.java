@@ -14,7 +14,11 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
     private List<Story> dataList;
@@ -41,7 +45,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
         holder.imageView.setImageBitmap(data.getImg());
         holder.title.setText(data.getTitle());
         holder.content.setText(data.getContent());
-        holder.time.setText(data.getCreated_at());
+        holder.time.setText(formatStoryTime(data.getCreated_at()));
+
 
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +62,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
 
             }
         });
+
     }
 
     @Override
@@ -66,6 +72,27 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
     public  void addItem(Story story){
         this.dataList.add(story);
         notifyDataSetChanged();
+    }
+    public String formatStoryTime(String created_at) {
+        LocalDateTime currentTime = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            currentTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            LocalDateTime createdAt = LocalDateTime.parse(created_at, formatter);
+            Duration duration = Duration.between(createdAt, currentTime);
+            long seconds = duration.getSeconds();
+
+            if (seconds < 60) {
+                return seconds + " giây trước";
+            } else if (seconds < 3600) {
+                long minutes = seconds / 60;
+                return minutes + " phút trước";
+            } else if (seconds < 86400) {
+                long hours = seconds / 3600;
+                return hours + " giờ trước";
+            }
+        }
+        return created_at;
     }
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageView;
@@ -79,6 +106,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
             content = itemView.findViewById(R.id.content);
             time = itemView.findViewById(R.id.time);
             deleteBtn = itemView.findViewById(R.id.deleteBtn);
+            itemView.setOnClickListener(v -> {
+                Toast.makeText(v.getContext(), title.getText().toString(), Toast.LENGTH_SHORT).show();
+            });
         }
     }
 }
