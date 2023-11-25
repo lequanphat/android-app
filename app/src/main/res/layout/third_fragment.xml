@@ -23,17 +23,32 @@
         android:layout_below="@+id/header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Số lần thông báo"
+        android:text="Thời gian thông báo"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        ></TextView>
+    <TextView
+        android:id="@+id/time"
+        android:layout_marginTop="100dp"
+        android:layout_below="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
         android:layout_centerHorizontal="true"
         android:textColor="#2ecc71"
-        android:textSize="20dp"
+        android:textSize="42dp"
         ></TextView>
     <Button
         android:id="@+id/button"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/time"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="REMIND ME 1p"
+        android:text="Thay đổi"
+        android:backgroundTint="#2ecc71"
+        android:textColor="@color/white"
         ></Button>
     <LinearLayout
         android:layout_below="@+id/header"

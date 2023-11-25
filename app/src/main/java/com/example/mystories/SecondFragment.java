@@ -68,7 +68,7 @@ public class SecondFragment extends Fragment {
         String title = titleEdt.getText().toString().trim();
         String content = contentEdt.getText().toString().trim();
         if(handleCheckStorySaved(title,content, image)){
-            Story story = new Story(title, content, image, getCurrentTime());
+            Story story = new Story("", title, content, image, getCurrentTime());
             db.save(story);
             myViewModel.setData(story);
             resetData();
@@ -124,10 +124,7 @@ public class SecondFragment extends Fragment {
                 }
             });
 
-    private String saveImageToStorage(Bitmap bitmapImage) {
-        String savedImagePath = null;
-
-        // Tạo thư mục để lưu trữ ảnh
+    private void saveImageToStorage(Bitmap bitmapImage) {
         String imageFileName = "IMG_" + System.currentTimeMillis() + ".jpg";
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera");
 
@@ -136,16 +133,12 @@ public class SecondFragment extends Fragment {
         }
         try {
             File imageFile = new File(storageDir, imageFileName);
-            savedImagePath = imageFile.getAbsolutePath();
-
             FileOutputStream fos = new FileOutputStream(imageFile);
             bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            Toast.makeText(getContext(), "ok", Toast.LENGTH_SHORT).show();
             fos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return savedImagePath;
     }
     public String getCurrentTime(){
         Date currentDate = new Date();

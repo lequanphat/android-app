@@ -43,20 +43,15 @@ public class HomeFragment extends Fragment {
     public void setUpRecycler(){
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         loadData();
-
     }
     public void loadData(){
         List<Story> dataList = db.getAllStories();
         MyAdapter adapter = new MyAdapter(getContext(), dataList);
         recyclerView.setAdapter(adapter);
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        Activity activity = getActivity();
 
         View root = inflater.inflate(R.layout.home_fragment, container, false);
         initViews(root);
@@ -74,6 +69,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        loadData();
     }
 
     @Override

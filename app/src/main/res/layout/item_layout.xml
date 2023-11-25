@@ -47,11 +47,22 @@
         android:layout_marginBottom="10dp"
         ></ImageView>
     <TextView
+        android:id="@+id/id"
+        android:layout_below="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID nè"
+        android:gravity="end"
+        android:textColor="#95a5a6"
+        ></TextView>
+    <TextView
         android:id="@+id/time"
         android:layout_below="@+id/image"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_height="wrap_content"
         android:text="Thời gian nè"
         android:gravity="end"
+        android:textColor="#95a5a6"
         ></TextView>
 </RelativeLayout>

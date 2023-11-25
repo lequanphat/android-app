@@ -13,7 +13,7 @@ import androidx.core.app.NotificationManagerCompat;
 public class ReminderBroadCast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "quanphat")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "MY_CHANEL")
                 .setSmallIcon(R.drawable.camera)
                 .setContentTitle("Take Picture!!!")
                 .setContentText("Đã đến lúc chụp ảnh rồi thưa quý ngài!")

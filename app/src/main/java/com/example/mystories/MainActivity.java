@@ -22,8 +22,6 @@ public class MainActivity extends AppCompatActivity implements ActionTransfer{
     private ViewPager viewPager;
     private AHBottomNavigation ahBottomNavigation;
 
-
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements ActionTransfer{
         }
 
     }
-
     public void initView(){
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         ahBottomNavigation = findViewById(R.id.navigation);
@@ -77,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements ActionTransfer{
         });
     }
     public void setAhBottomNavigation(){
+
         AHBottomNavigationItem item1 = new AHBottomNavigationItem("Home", R.drawable.home, R.color.white);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem("Camera", R.drawable.camera, R.color.white);
         AHBottomNavigationItem item3 = new AHBottomNavigationItem("Setting", R.drawable.setting, R.color.white);
@@ -118,4 +116,6 @@ public class MainActivity extends AppCompatActivity implements ActionTransfer{
     public void goHomeAction() {
         viewPager.setCurrentItem(0);
     }
+
+
 }

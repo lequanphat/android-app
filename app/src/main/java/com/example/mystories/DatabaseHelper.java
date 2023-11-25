@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -31,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             CONTENT + " TEXT, " +
             CREATE_AT + " DATETIME DEFAULT (datetime('now', 'localtime'))" + ")";
 
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -50,6 +53,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public void update(Story story) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        Bitmap bitmap = story.getImg();
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        values.put(COLUMN_IMAGE, byteArray);
+        values.put(TITLE, story.getTitle());
+        values.put(CONTENT, story.getContent());
+
+        String selection = COLUMN_ID + "=?";
+        String[] selectionArgs = {String.valueOf(story.getId())};
+
+        db.update(TABLE_NAME, values, selection, selectionArgs);
+        db.close();
+    }
 
     @SuppressLint("Range")
     public List<Story> getAllStories() {
@@ -61,10 +83,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 byte[] imageByteArray = cursor.getBlob(cursor.getColumnIndex(COLUMN_IMAGE));
                 Bitmap bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
+                String id = String.valueOf(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
                 String title = cursor.getString(cursor.getColumnIndex(TITLE));
                 String content = cursor.getString(cursor.getColumnIndex(CONTENT));
                 String created_at = cursor.getString(cursor.getColumnIndex(CREATE_AT));
-                Story story = new Story(title, content, bitmap, created_at);
+                Story story = new Story(id, title, content, bitmap, created_at);
                 storyList.add(story);
             } while (cursor.moveToNext());
         }
@@ -72,9 +95,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return storyList;
     }
-    public void deleteStory(String createdAt) {
+
+    public void deleteStory(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, CREATE_AT + "=?", new String[]{createdAt});
+        db.delete(TABLE_NAME, COLUMN_ID + "=?", new String[]{id});
         db.close();
     }
 
